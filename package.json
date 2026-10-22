@@ -1,0 +1,14 @@
+{
+  "name": "gtm-template-consent-mode",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "ultracite check . && python3 scripts/check-template-sync.py",
+    "format": "ultracite fix . && python3 scripts/sync-template.py",
+    "lint": "ultracite check ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "ultracite": "8.0.1"
+  }
+}

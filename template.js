@@ -1,18 +1,21 @@
-const log = require('logToConsole');
-const queryPermission = require('queryPermission');
-const setDefaultConsentState = require('setDefaultConsentState');
-const updateConsentState = require('updateConsentState');
-const getCookieValues = require('getCookieValues');
-const callInWindow = require('callInWindow');
-const gtagSet = require('gtagSet');
-const JSON = require('JSON');
+const log = require("logToConsole");
+const queryPermission = require("queryPermission");
+const setDefaultConsentState = require("setDefaultConsentState");
+const updateConsentState = require("updateConsentState");
+const getCookieValues = require("getCookieValues");
+const callInWindow = require("callInWindow");
+const gtagSet = require("gtagSet");
+const JSON = require("JSON");
 
-const COOKIE_NAME = data.cookieName || 'lemon_signal_consent';
-const LISTENER_GLOBAL = 'LemonSignalAddConsentListener';
+const COOKIE_NAME = data.cookieName || "lemon_signal_consent";
+const LISTENER_GLOBAL = "LemonSignalAddConsentListener";
 
 const splitInput = (input) => {
   if (!input) return [];
-  return input.split(',').map((entry) => entry.trim()).filter((entry) => entry.length !== 0);
+  return input
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length !== 0);
 };
 
 const parseCommandData = (settings) => {
@@ -24,10 +27,10 @@ const parseCommandData = (settings) => {
     commandData.region = regions;
   }
   granted.forEach((entry) => {
-    commandData[entry] = 'granted';
+    commandData[entry] = "granted";
   });
   denied.forEach((entry) => {
-    commandData[entry] = 'denied';
+    commandData[entry] = "denied";
   });
   return commandData;
 };
@@ -37,60 +40,92 @@ const onUserConsent = (consent) => {
     return;
   }
   updateConsentState({
-    ad_storage: consent.adConsentGranted ? 'granted' : 'denied',
-    ad_user_data: consent.adUserDataConsentGranted ? 'granted' : 'denied',
-    ad_personalization: consent.adPersonalizationConsentGranted ? 'granted' : 'denied',
-    analytics_storage: consent.analyticsConsentGranted ? 'granted' : 'denied',
-    functionality_storage: consent.functionalityConsentGranted ? 'granted' : 'denied',
-    personalization_storage: consent.personalizationConsentGranted ? 'granted' : 'denied',
-    security_storage: consent.securityConsentGranted ? 'granted' : 'denied'
+    ad_personalization: consent.adPersonalizationConsentGranted
+      ? "granted"
+      : "denied",
+    ad_storage: consent.adConsentGranted ? "granted" : "denied",
+    ad_user_data: consent.adUserDataConsentGranted ? "granted" : "denied",
+    analytics_storage: consent.analyticsConsentGranted ? "granted" : "denied",
+    functionality_storage: consent.functionalityConsentGranted
+      ? "granted"
+      : "denied",
+    personalization_storage: consent.personalizationConsentGranted
+      ? "granted"
+      : "denied",
+    security_storage: consent.securityConsentGranted ? "granted" : "denied",
   });
 };
 
 const applyBuiltInDefaults = () => {
   setDefaultConsentState({
-    ad_storage: 'granted',
-    ad_user_data: 'granted',
-    ad_personalization: 'granted',
-    analytics_storage: 'granted',
-    personalization_storage: 'granted',
-    functionality_storage: 'granted',
-    security_storage: 'granted',
-    wait_for_update: 500
+    ad_personalization: "granted",
+    ad_storage: "granted",
+    ad_user_data: "granted",
+    analytics_storage: "granted",
+    functionality_storage: "granted",
+    personalization_storage: "granted",
+    security_storage: "granted",
+    wait_for_update: 500,
   });
   setDefaultConsentState({
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-    analytics_storage: 'denied',
-    personalization_storage: 'denied',
-    functionality_storage: 'granted',
-    security_storage: 'granted',
+    ad_personalization: "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    analytics_storage: "denied",
+    functionality_storage: "granted",
+    personalization_storage: "denied",
     region: [
-      'GB', 'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR',
-      'HU', 'IE', 'IS', 'IT', 'LV', 'LI', 'LT', 'LU', 'MT', 'NL', 'NO', 'PL', 'PT',
-      'RO', 'SK', 'SI', 'ES', 'SE'
+      "GB",
+      "AT",
+      "BE",
+      "BG",
+      "HR",
+      "CY",
+      "CZ",
+      "DK",
+      "EE",
+      "FI",
+      "FR",
+      "DE",
+      "GR",
+      "HU",
+      "IE",
+      "IS",
+      "IT",
+      "LV",
+      "LI",
+      "LT",
+      "LU",
+      "MT",
+      "NL",
+      "NO",
+      "PL",
+      "PT",
+      "RO",
+      "SK",
+      "SI",
+      "ES",
+      "SE",
     ],
-    wait_for_update: 500
+    security_storage: "granted",
+    wait_for_update: 500,
   });
 };
 
 const applyGtagSetOptions = () => {
-  if (queryPermission('write_data_layer', 'ads_data_redaction')) {
-    gtagSet('ads_data_redaction', !!data.ads_data_redaction);
+  if (queryPermission("write_data_layer", "ads_data_redaction")) {
+    gtagSet("ads_data_redaction", !!data.ads_data_redaction);
   }
-  if (queryPermission('write_data_layer', 'url_passthrough')) {
-    gtagSet('url_passthrough', !!data.url_passthrough);
+  if (queryPermission("write_data_layer", "url_passthrough")) {
+    gtagSet("url_passthrough", !!data.url_passthrough);
   }
-  if (data.developerId) {
-    if (queryPermission('write_data_layer', 'developer_id')) {
-      gtagSet('developer_id.' + data.developerId, true);
-    }
+  if (data.developerId && queryPermission("write_data_layer", "developer_id")) {
+    gtagSet("developer_id." + data.developerId, true);
   }
 };
 
 const restoreFromCookie = () => {
-  if (!queryPermission('get_cookies', COOKIE_NAME)) {
+  if (!queryPermission("get_cookies", COOKIE_NAME)) {
     return;
   }
   const cookieValues = getCookieValues(COOKIE_NAME);
@@ -104,15 +139,15 @@ const restoreFromCookie = () => {
 };
 
 const registerListener = () => {
-  if (!queryPermission('access_globals', 'execute', LISTENER_GLOBAL)) {
-    log('Lemon Signal: missing execute permission for', LISTENER_GLOBAL);
+  if (!queryPermission("access_globals", "execute", LISTENER_GLOBAL)) {
+    log("Lemon Signal: missing execute permission for", LISTENER_GLOBAL);
     return;
   }
   callInWindow(LISTENER_GLOBAL, onUserConsent);
 };
 
 const main = () => {
-  log('Lemon Signal consent template data =', data);
+  log("Lemon Signal consent template data =", data);
 
   applyGtagSetOptions();
 

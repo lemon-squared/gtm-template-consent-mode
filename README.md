@@ -69,6 +69,7 @@ Server-side tags (Meta, Snap, TikTok, Reddit, and others) are separate template 
 | `template.js` | Sandboxed code. Must match `___SANDBOXED_JS_FOR_WEB_TEMPLATE___`. |
 | `tests.yaml` | Unit tests. Must match `___TESTS___`. |
 | `metadata.yaml` | Community Gallery versions. Add a `sha` only when `template.tpl` changes. |
+| `biome.jsonc` | Ultracite Biome config. `bun run format` formats `template.js` and copies it into `template.tpl`. |
 | `LICENSE` | Apache 2.0 |
 
 ## Site bridge
