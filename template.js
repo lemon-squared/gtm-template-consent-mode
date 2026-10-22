@@ -1,14 +1,3 @@
-/**
- * Custom tag template (web) — see:
- * https://developers.google.com/tag-platform/tag-manager/templates
- * https://developers.google.com/tag-platform/tag-manager/templates/consent-apis
- *
- * Always call data.gtmOnSuccess() / data.gtmOnFailure() so Preview and
- * tag sequencing work (Custom templates quick start).
- *
- * Keep in sync with template.tpl ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
- */
-
 const log = require('logToConsole');
 const queryPermission = require('queryPermission');
 const setDefaultConsentState = require('setDefaultConsentState');

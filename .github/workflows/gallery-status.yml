@@ -1,0 +1,16 @@
+name: Gallery Status
+
+on:
+  schedule:
+    - cron: "0 4 * * SUN"
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+
+jobs:
+  gallery-status:
+    uses: lemon-squared/gtm-template-workflows/.github/workflows/gallery-status.yml@main
+    permissions:
+      contents: write

@@ -1,0 +1,20 @@
+scenarios:
+- name: Applies built-in defaults and finishes
+  code: |-
+    const mockData = {
+      cookieName: 'lemon_signal_consent',
+      ads_data_redaction: false,
+      url_passthrough: false
+    };
+
+    mock('queryPermission', () => true);
+    mock('setDefaultConsentState', () => {});
+    mock('updateConsentState', () => {});
+    mock('getCookieValues', () => []);
+    mock('callInWindow', () => {});
+    mock('gtagSet', () => {});
+    mock('logToConsole', () => {});
+
+    runCode(mockData);
+
+    assertApi('gtmOnSuccess').wasCalled();

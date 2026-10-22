@@ -19,7 +19,7 @@ Do **not** paste `template.tpl` into the **Code** tab. That treats the Terms tex
 
 `template.tpl` must match a real GTM **Export** (UTF-8 BOM, typed `WEB_PERMISSIONS`, YAML `scenarios:` tests). Empty `[]` permissions/tests will make Import fail with **Error importing file**.
 
-**Fallback** if Import still fails: Templates → New → paste only [`sandboxed.js`](./sandboxed.js) into **Code**, add Fields from the table below, **Save** (auto Permissions), then tighten cookie / listener / dataLayer keys.
+**Fallback** if Import still fails: Templates → New → paste only [`template.js`](./template.js) into **Code**, add Fields from the table below, **Save** (auto Permissions), then tighten cookie / listener / dataLayer keys.
 
 ## Quick-start editor checklist
 
@@ -59,7 +59,17 @@ Do **not** paste `template.tpl` into the **Code** tab. That treats the Terms tex
 7. Google tag / GA4 in the same container → Consent Settings → require `analytics_storage`.
 8. Publish.
 
-Server-side tags (Meta, Snap, TikTok, Reddit, and others) are separate template repos. They read Google consent state. They do not replace this tag.
+Server-side tags (Meta, Snap, TikTok, Reddit, and others) are separate template repos. They read Google consent state. They do not replace this tag. Each one gets the same files as this repo (`template.tpl`, `template.js`, `metadata.yaml`, `tests.yaml`) and a Tag Execution Consent Settings group: send always, or abort unless `ad_storage` is granted (`eventData.consent_state.ad_storage`, otherwise the third character of `x-ga-gcs`).
+
+## Repository layout
+
+| File | Role |
+| --- | --- |
+| `template.tpl` | File you import into GTM. Gallery submission reads this. |
+| `template.js` | Sandboxed code. Must match `___SANDBOXED_JS_FOR_WEB_TEMPLATE___`. |
+| `tests.yaml` | Unit tests. Must match `___TESTS___`. |
+| `metadata.yaml` | Community Gallery versions. Add a `sha` only when `template.tpl` changes. |
+| `LICENSE` | Apache 2.0 |
 
 ## Site bridge
 
@@ -70,3 +80,10 @@ window.LemonSignalAddConsentListener = function (cb) { /* … */ };
 ```
 
 before React hydrates, so Consent Initialization can register the callback.
+
+## Open Source
+
+The Lemon Signal Consent Mode tag is developed and maintained by [Lemon Squared](https://github.com/lemon-squared) under the Apache 2.0 license.
+
+### GTM Gallery Status
+🔴 Not listed
