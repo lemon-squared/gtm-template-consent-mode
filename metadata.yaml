@@ -1,5 +1,7 @@
 homepage: "https://github.com/lemon-squared/signal"
 documentation: "https://github.com/lemon-squared/gtm-template-consent-mode#readme"
 versions:
+  - sha: b95376338e693ef9d6fa5c69c4a245ac7a7e7d21
+    changeNotes: Format the sandboxed code with Biome. Consent behavior is unchanged.
   - sha: 9f4a00f91240d475ba8ce9f1189caf27a1b1cd1d
     changeNotes: Initial Consent Mode v2 web tag template for @lemon-squared/signal.
